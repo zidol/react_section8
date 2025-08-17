@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useReducer } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -25,18 +25,36 @@ const mockData = [
   },
 ];
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "CREATE":
+      return [action.data, ...state];
+    case "UPDATE":
+      return state.map((item) =>
+        item.id === action.targetId ? { ...item, isDone: !item.isDone } : item
+      );
+    case "DELETE":
+      return state.filter((item) => item.id !== action.targetId);
+    default:
+      return state;
+  }
+}
+
 function App() {
-  const [todos, setTodos] = useState(mockData);
+  const [todos, distpatch] = useReducer(reducer, mockData);
+
   const idRef = useRef(3);
 
   const onCreate = (content) => {
-    const newTodo = {
-      id: idRef.current++,
-      isDone: false,
-      content: content,
-      date: new Date().getTime(),
-    };
-    setTodos([newTodo, ...todos]);
+    distpatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current++,
+        isDone: false,
+        content: content,
+        date: new Date().getTime(),
+      },
+    });
   };
   const onUpdate = (targetId) => {
     // setTodos(
@@ -50,14 +68,22 @@ function App() {
     //     return todo;
     //   })
     // );
-    setTodos(
-      todos.map((todo) =>
-        todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
-      )
-    );
+    // setTodos(
+    //   todos.map((todo) =>
+    //     todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
+    //   )
+    // );
+    distpatch({
+      type: "UPDATE",
+      targetId: targetId,
+    });
   };
   const onDeleate = (targetId) => {
-    setTodos(todos.filter((todo) => todo.id !== targetId));
+    // setTodos(todos.filter((todo) => todo.id !== targetId));
+    distpatch({
+      type: "DELETE",
+      targetId: targetId,
+    });
   };
   return (
     <div className="App">
