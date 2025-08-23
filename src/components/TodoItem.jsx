@@ -30,10 +30,12 @@ const TodoItem = ({ id, isDone, content, date, onUpdate, onDeleate }) => {
 //따라서, 복잡한 props 구조를 가진 컴포넌트에서는 커스텀 비교 함수를 사용하여 리렌더링 조건을 세밀하게 제어할 수 있음
 //커스텀 비교 함수는 이전 props와 새로운 props를 인자로 받아서, 리렌더링이 필요한 경우 false를 반환하고, 그렇지 않은 경우 true를 반환
 //이 예제에서는 id, isDone, content, date 네 가지 props를 비교하여 하나라도 변경되었다면 리렌더링을 수행하도록 설정
-export default memo(TodoItem, (prevProps, nextProps) => {
-  if (prevProps.id !== nextProps.id) return false;
-  if (prevProps.isDone !== nextProps.isDone) return false;
-  if (prevProps.content !== nextProps.content) return false;
-  if (prevProps.date !== nextProps.date) return false;
-  return true;
-});
+// export default memo(TodoItem, (prevProps, nextProps) => {
+//   if (prevProps.id !== nextProps.id) return false;
+//   if (prevProps.isDone !== nextProps.isDone) return false;
+//   if (prevProps.content !== nextProps.content) return false;
+//   if (prevProps.date !== nextProps.date) return false;
+//   return true;
+// });
+
+export default memo(TodoItem);

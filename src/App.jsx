@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef, useReducer } from "react";
+import { useState, useRef, useReducer, useCallback } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -45,7 +45,7 @@ function App() {
 
   const idRef = useRef(3);
 
-  const onCreate = (content) => {
+  const onCreate = useCallback((content) => {
     distpatch({
       type: "CREATE",
       data: {
@@ -55,8 +55,8 @@ function App() {
         date: new Date().getTime(),
       },
     });
-  };
-  const onUpdate = (targetId) => {
+  }, []);
+  const onUpdate = useCallback((targetId) => {
     // setTodos(
     //   todos.map((todo) => {
     //     if (todo.id === targetId) {
@@ -77,14 +77,16 @@ function App() {
       type: "UPDATE",
       targetId: targetId,
     });
-  };
-  const onDeleate = (targetId) => {
+  }, []);
+
+  const onDeleate = useCallback((targetId) => {
     // setTodos(todos.filter((todo) => todo.id !== targetId));
     distpatch({
       type: "DELETE",
       targetId: targetId,
     });
-  };
+  }, []);
+
   return (
     <div className="App">
       <Header />
