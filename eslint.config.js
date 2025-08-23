@@ -25,10 +25,7 @@ export default [
       ...reactHooks.configs.recommended.rules,
       "no-unused-vars": "warn",
       "react/prop-types": "off",
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": "off",
     },
   },
 ];
